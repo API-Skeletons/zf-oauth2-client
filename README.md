@@ -15,9 +15,8 @@ Install
 Configuration
 -------------
 
-Configuration is done through your config file of choosing.
+Copy `config/zf-oauth2-client.global.php.dist` to `config/autoload/zf-oauth2-client-global.php` and edit.
 You may configure multiple zf-oauth2 authorization code providers.
-Simply add the following array to a config file:
 
 ```php
     'zf-oauth2-client' => array(
