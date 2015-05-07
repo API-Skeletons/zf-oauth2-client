@@ -4,6 +4,7 @@ namespace ZF\OAuth2\Client;
 
 use Zend\Http;
 use Zend\Json\Json;
+use Exception;
 
 class OAuth2Client
 {
@@ -59,8 +60,10 @@ class OAuth2Client
 
         $body = Json::decode($response->getBody());
         if ($response->getStatusCode() !== 200) {
-            throw new \Exception($body->detail, $body->status);
+            // @codeCoverageIgnoreStart
+            throw new Exception($body->detail, $body->status);
         }
+            // @codeCoverageIgnoreEnd
 
         return $body;
     }
