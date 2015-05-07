@@ -1,11 +1,12 @@
 <?php
 
 return array(
-    'zf-oauth2-client' => array(
-        'default' => array(
-            'clientId' => '',
-            'secret' => '',
-            'endpoint' => 'http://localhost:8081/oauth',
+    'service_manager' => array(
+        'aliases' => array(
+            'ZF\OAuth2\Client\Http' => 'Zend\Http\Client',
+        ),
+        'invokables' => array(
+            'Zend\Http\Client' => 'Zend\Http\Client',
         ),
     ),
 );

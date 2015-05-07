@@ -6,11 +6,39 @@
 
 namespace ZF\OAuth2\Client;
 
+use ZF\OAuth2\Client\OAuth2Client as ZFOAuth2Client;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
+
 /**
  * ZF2 module
  */
-class Module
+class Module implements
+    AutoloaderProviderInterface,
+    ConfigProviderInterface,
+    ServiceProviderInterface
 {
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'zf_oauth2_client' => function ($services) {
+                    $config = $services->get('Config');
+                    $config = $config['zf-oauth2-client'];
+
+                    $httpClient = $services->get('ZF\OAuth2\Client\Http');
+
+                    $client = new ZFOAuth2Client();
+                    $client->setConfig($config);
+                    $client->setHttpClient($httpClient);
+
+                    return $client;
+                }
+            ),
+        );
+    }
+
     /**
      * Retrieve autoloader configuration
      *
