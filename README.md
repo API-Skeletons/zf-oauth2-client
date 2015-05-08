@@ -37,22 +37,26 @@ Configuration
 -------------
 
 Copy `config/zf-oauth2-client.global.php.dist` to `config/autoload/zf-oauth2-client-global.php` and edit.
-You may configure multiple zf-oauth2 authorization code providers.
+You may configure multiple zf-oauth2 authorization code provider profiles.  login_redirect_route is your
+authentication route.
 
 ```php
     'zf-oauth2-client' => array(
-        'default' => array(
-            'client_id' => 'client',
-            'secret' => 'password',
-            'endpoint' => 'http://localhost:8081/oauth',
-            'callback' => 'http://localhost:8082/application/oauth2/callback',
+        'profiles' => array(
+            'login_redirect_route' => 'zfcuser',
+            'default' => array(
+                'client_id' => 'client',
+                'secret' => 'password',
+                'endpoint' => 'http://localhost:8081/oauth',
+                'callback' => 'http://localhost:8082/application/oauth2/callback',
+            ),
+            /* 'other provider' => array( ... */
         ),
-        /* 'other provider' => array( ... */
     ),
 ```
 
 
-Server Configuration
+zf-oauth2 Server Configuration
 --------------------
 
 zf-oauth2-client expects the server to return a new refresh token anytime a refresh token is used to
@@ -66,47 +70,22 @@ return array(
         ),
     ),
 );
-
 ```
+
 
 Use
 ---
 
-You may choose to setup a controller action or incorporate this code into your login method
-where 'default' is the configuration block for the authorization code provider:
+A controller is provided to send the user into the authorization code process and validate the code
+when the user returns.  Upon validation the session will have a valid access_token.
 
-```php
-public function loginAction()
-{
-    $state = md5(rand());
-    $scope = 'read';
-    $oauth2Client = $this->getServiceLocator()->get('zf_oauth2_client');
+To send a user into the authorization code process redirect them (from a controller):
 
-    return $this->plugin('redirect')
-        ->toUrl($oauth2Client->getAuthorizationCodeUri('default', $state, $scope));
-}
+```
+$this->plugin('redirect')
+    ->toRoute('zf-oauth2-client', array('profile' => 'default', 'scope' => 'requested_scopes'));
 ```
 
-You will need a callback action too.  This is the uri listed above for 'callback'.
-
-```php
-public function callbackAction()
-{
-    $oauth2Client = $this->getServiceLocator()->get('zf_oauth2_client');
-    $accessToken = $oauth2Client->validate('default', $this->getRequest()->getQuery());
-
-    die('valid access token received');
-}
-```
-
-The response from validate is a stdClass object and a direct respose from the zf-oauth2 server:
-```php
-stdClass Object
-(
-    [access_token] => 3794b26015d87fb562068763071ec7850d7d2c2a
-    [expires_in] => 3600
-    [token_type] => Bearer
-    [scope] =>
-    [refresh_token] => 1b67b907f3779e8539df523a7c797c37927e5da6
-)
-```
+When the user returns from the process they will be redirected to the login_redirect_route.  This route
+should fetch an authorized http client and, using it, authenticate the user based on their profile
+returned from an API call back to the OAuth2 server.

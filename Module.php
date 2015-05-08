@@ -27,14 +27,10 @@ class Module implements
                     $config = $services->get('Config');
                     $config = $config['zf-oauth2-client'];
 
-                    $httpClient = $services->get('ZF\OAuth2\Client\Http');
-                    $httpBearerClient = $services->get('ZF\OAuth2\Client\HttpBearer');
-
                     $client = new OAuth2Service();
                     $client->setConfig($config);
-                    $client->setHttpClient($httpClient);
-                    $client->setHttpBearerClient($httpBearerClient);
-
+                    $client->setHttpClient($services->get('ZF\OAuth2\Client\Http'));
+                    $client->setHttpBearerClient($services->get('ZF\OAuth2\Client\HttpBearer'));
                     $client->setPluginManager($services->get('ControllerPluginManager'));
 
                     return $client;

@@ -1,17 +1,32 @@
 <?php
 
-namespace ZFTest\OAuth2\Client;
+namespace ZFTest\OAuth2\Client\Service;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 use Zend\Http\Response;
 use Datetime;
 use Exception;
 use Mockery as M;
+use Zend\Mvc\InjectApplicationEventInterface;
+use Zend\EventManager\EventInterface;
 
-class ClientTest extends AbstractHttpControllerTestCase
+class OAuth2ServiceTest extends AbstractHttpControllerTestCase implements InjectApplicationEventInterface
 {
     protected $serviceManager;
     protected $state;
+    protected $event;
+
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    public function setEvent(EventInterface $event)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
 
     public function setUp()
     {
@@ -26,12 +41,13 @@ class ClientTest extends AbstractHttpControllerTestCase
     public function testGetAuthorizationCodeUri()
     {
         $this->state = md5(rand());
-        $oauth2Client = $this->serviceManager->get('zf_oauth2_client');
-        $uri = $oauth2Client->getAuthorizationCodeUri('default', $this->state);
+        $oAuth2Service = $this->serviceManager->get('ZF\OAuth2\Client\Service\OAuth2Service');
+        $uri = $oAuth2Service->getAuthorizationCodeUri('default', $this->state);
+
 
         $expectedQuery = array(
             'client_id' => 'client_id',
-            'redirect_uri' => 'http://localhost:8082/application/oauth2/callback',
+            'redirect_uri' => 'http://localhost:8082/oauth2/client/default',
             'scope' => '',
             'response_type' => 'code',
             'approval_prompt' => 'auto',
@@ -68,10 +84,9 @@ class ClientTest extends AbstractHttpControllerTestCase
         $mockHttpClient->shouldReceive('setRawBody')->once();
         $mockHttpClient->shouldReceive('send')->once()->andReturn($response);
 
-        $this->state = md5(rand());
-        $oauth2Client = $this->serviceManager->get('zf_oauth2_client');
-        $oauth2Client->setHttpClient($mockHttpClient);
-        $access_token = $oauth2Client->validate('default', array('code' => 'code', 'state' => $this->state));
+        $oAuth2Service = $this->serviceManager->get('ZF\OAuth2\Client\Service\OAuth2Service');
+        $oAuth2Service->setHttpClient($mockHttpClient);
+        $access_token = $oAuth2Service->validate('default', array('code' => 'code', 'state' => $this->state));
 
         $compare = new \stdClass();
         $compare->access_token = 'f1876e22c5fa2eedab1f02545c175639d649a406';

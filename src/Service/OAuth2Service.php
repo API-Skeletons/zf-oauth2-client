@@ -53,11 +53,8 @@ class OAuth2Service
     {
         $container = new Container("OAuth2_Client_$profile");
 
-        $now = new Datetime();
-        $expires = $container->expires;
-
         // Use refresh token if access token is expired
-        if ($expires < $now) {
+        if ($container->expires <= new Datetime()) {
             $this->refresh($profile);
         }
 
@@ -89,7 +86,7 @@ class OAuth2Service
         $config = $this->getConfig();
 
         $client = $this->getHttpClient();
-        $client->setUri($config[$profile]['endpoint']);
+        $client->setUri($config['profiles'][$profile]['endpoint']);
         $client->setMethod('POST');
         $client->setHeaders(array(
             'Accept' => 'application/json',
@@ -97,8 +94,8 @@ class OAuth2Service
         ));
         $client->setRawBody(Json::encode(array(
             'grant_type' => 'refresh_token',
-            'client_id' => $config[$profile]['clientId'],
-            'client_secret' => $config[$profile]['secret'],
+            'client_id' => $config['profiles'][$profile]['client_id'],
+            'client_secret' => $config['profiles'][$profile]['secret'],
             'refresh_token' => $container->refresh_token,
         )));
 
@@ -142,7 +139,7 @@ class OAuth2Service
 
         // Exchange the authorization code for an access token
         $client = $this->getHttpClient();
-        $client->setUri($config[$profile]['endpoint']);
+        $client->setUri($config['profiles'][$profile]['endpoint']);
         $client->setMethod('POST');
         $client->setHeaders(array(
             'Accept' => 'application/json',
@@ -150,8 +147,8 @@ class OAuth2Service
         ));
         $client->setRawBody(Json::encode(array(
             'grant_type' => 'authorization_code',
-            'client_id' => $config[$profile]['clientId'],
-            'client_secret' => $config[$profile]['secret'],
+            'client_id' => $config['profiles'][$profile]['client_id'],
+            'client_secret' => $config['profiles'][$profile]['secret'],
             'redirect_uri' => $redirectUri,
             'code' => $query['code'],
         )));
@@ -194,7 +191,7 @@ class OAuth2Service
         $container->state = md5(rand());
 
         $uri = \Zend\Uri\UriFactory::factory(
-            $config[$profile]['endpoint'] . '/authorize'
+            $config['profiles'][$profile]['endpoint'] . '/authorize'
         );
 
         $urlPlugin = $this->getPluginManager()->get('url');
@@ -206,7 +203,7 @@ class OAuth2Service
         );
 
         $uri->setQuery(array(
-            'client_id' => $config[$profile]['clientId'],
+            'client_id' => $config['profiles'][$profile]['client_id'],
             'redirect_uri' => $redirectUri,
             'scope' => $scope,
             'response_type' => 'code',

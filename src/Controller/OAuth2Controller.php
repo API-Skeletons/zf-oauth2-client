@@ -18,17 +18,14 @@ class OAuth2Controller extends AbstractActionController
     public function loginAction()
     {
         $oAuth2Service = $this->getServiceLocator()->get('ZF\OAuth2\Client\Service\OAuth2Service');
+        $oAuth2Config = $oAuth2Service->getConfig();
 
         if (!empty($this->getRequest()->getQuery('code'))) {
             // This is a callback request with a code
             $oAuth2Service->validate($this->params()->fromRoute('profile'), $this->getRequest()->getQuery());
-
-            // Validation successful; use
-            $oAuth2Service->getHttpBearerClient('default');
-
-            die('access token received');
-
+            $this->plugin('redirect')->toRoute($oAuth2Config['login_redirect_route']);
         } else {
+            // Send user to authorization code
             return $this->plugin('redirect')
                 ->toUrl($oAuth2Service->getAuthorizationCodeUri(
                     'default',

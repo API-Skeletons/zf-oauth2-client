@@ -2,7 +2,7 @@
 
 return array(
     'zf-oauth2-client' => array(
-        'route' => '',
+        'login_redirect_route' => 'zfcuser',
         'profiles' => array(
             'default' => array(
                 'client_id' => 'client_id',
