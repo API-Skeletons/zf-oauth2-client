@@ -30,7 +30,7 @@ Add this module to your application's configuration:
 ),
 ```
 
-This module provides the service manager config through the module but you may use the `ZF\OAuth2\Client\OAuth2Client``` class directly by injecting your own `Zend\Http\Client` and configuration.
+This module provides the service manager config through the module but you may use the `ZF\OAuth2\Client\OAuth2Client` class directly by injecting your own `Zend\Http\Client` and configuration.
 
 
 Configuration
@@ -42,8 +42,8 @@ authentication route.
 
 ```php
     'zf-oauth2-client' => array(
+        'login_redirect_route' => 'zfcuser',
         'profiles' => array(
-            'login_redirect_route' => 'zfcuser',
             'default' => array(
                 'client_id' => 'client',
                 'secret' => 'password',
@@ -81,7 +81,7 @@ when the user returns.  Upon validation the session will have a valid access_tok
 
 To send a user into the authorization code process redirect them (from a controller):
 
-```
+```php
 $this->plugin('redirect')
     ->toRoute('zf-oauth2-client', array('profile' => 'default', 'scope' => 'requested_scopes'));
 ```
