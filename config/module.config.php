@@ -23,13 +23,9 @@ return array(
     ),
 
     'service_manager' => array(
-        'aliases' => array(
-#            'ZF\OAuth2\Client\Http' => 'zf_oauth2_client_http',
-            'ZF\OAuth2\Client\HttpBearer' => 'zf_oauth2_client_http',
-        ),
         'invokables' => array(
-            'zf_oauth2_client_http' => 'Zend\Http\Client',
-            'zf_oauth2_client_bearer_http' => 'Zend\Http\Client',
+            'ZF\OAuth2\Client\Http' => 'Zend\Http\Client',
+            'ZF\OAuth2\Client\HttpBearer' => 'Zend\Http\Client',
         ),
     ),
 );

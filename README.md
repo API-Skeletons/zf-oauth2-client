@@ -3,7 +3,7 @@ ZF OAuth2 Client
 
 [![Build Status](https://travis-ci.org/TomHAnderson/zf-oauth2-client.svg?branch=0.1.0)](https://travis-ci.org/TomHAnderson/zf-oauth2-client)
 [![Coverage Status](https://coveralls.io/repos/TomHAnderson/zf-oauth2-client/badge.svg)](https://coveralls.io/r/TomHAnderson/zf-oauth2-client)
-[![Total Downloads](https://poser.pugx.org/zfcampus/zf-oauth2-client/downloads)](https://packagist.org/packages/zfcampus/zf-oauth2-client) 
+[![Total Downloads](https://poser.pugx.org/zfcampus/zf-oauth2-client/downloads)](https://packagist.org/packages/zfcampus/zf-oauth2-client)
 
 This client is written to connect to zf-oauth2 specifically.
 
@@ -51,6 +51,23 @@ You may configure multiple zf-oauth2 authorization code providers.
     ),
 ```
 
+
+Server Configuration
+--------------------
+
+zf-oauth2-client expects the server to return a new refresh token anytime a refresh token is used to
+get a new access token.  To set this flag on zf-oauth2 use
+
+```php
+return array(
+    'zf-oauth2' => array(
+        'options' => array(
+            'always_issue_new_refresh_token' => true,
+        ),
+    ),
+);
+
+```
 
 Use
 ---
