@@ -1,15 +1,17 @@
 <?php
 
-namespace ZF\OAuth2\Client;
+namespace ZF\OAuth2\Client\Service;
 
 use Zend\Http;
 use Zend\Json\Json;
 use Exception;
+use Zend\Session\Container;
 
-class OAuth2Client
+class OAuth2Service
 {
     protected $config;
     protected $httpClient;
+    protected $bearerHttpClient;
 
     public function setConfig($config)
     {
@@ -35,6 +37,18 @@ class OAuth2Client
         return $this->httpClient;
     }
 
+    public function setBearerHttpClient(Http\Client $client)
+    {
+        $this->bearerHttpClient = $client;
+
+        return $this;
+    }
+
+    public function getBearerHttpClient()
+    {
+        return $this->bearerHttpClient;
+    }
+
     /**
      * Return an access code from an OAuth2 request callback
      */
@@ -58,12 +72,20 @@ class OAuth2Client
         )));
         $response = $client->send();
 
-        $body = Json::decode($response->getBody());
+        $body = Json::decode($response->getBody(), true);
         if ($response->getStatusCode() !== 200) {
             // @codeCoverageIgnoreStart
-            throw new Exception($body->detail, $body->status);
+            throw new Exception($body['detail'], $body['status']);
         }
             // @codeCoverageIgnoreEnd
+
+        // Save the access token to the session
+        $container = new Container("OAuth2\Client\$profile");
+        $container->access_token = $body['access_token'];
+        $container->expires_in = $body['expires_in'];
+        $container->token_type = $body['token_type'];
+        $container->scope = $body['scope'];
+        $container->refresh_token = $body['refresh_token'];
 
         return $body;
     }
