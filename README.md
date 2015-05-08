@@ -1,6 +1,10 @@
 ZF OAuth2 Client
 ================
 
+[![Build Status](https://travis-ci.org/TomHAnderson/zf-oauth2-client.svg?branch=0.1.0)](https://travis-ci.org/TomHAnderson/zf-oauth2-client)
+[![Coverage Status](https://coveralls.io/repos/TomHAnderson/zf-oauth2-client/badge.svg)](https://coveralls.io/r/TomHAnderson/zf-oauth2-client)
+[![Total Downloads](https://poser.pugx.org/zfcampus/zf-oauth2-client/downloads)](https://packagist.org/packages/zfcampus/zf-oauth2-client) 
+
 This client is written to connect to zf-oauth2 specifically.
 
 When you write an application which includes
@@ -10,6 +14,23 @@ this module is written to connect easily and cleanly with your application.
 
 Install
 -------
+
+Installation of this module uses composer. For composer documentation, please refer to [getcomposer.org](http://getcomposer.org/).
+
+```sh
+$ php composer.phar require zfcampus/zf-oauth2-client "~0.1"
+```
+
+Add this module to your application's configuration:
+
+```php
+'modules' => array(
+   ...
+   'ZF\OAuth2\Client',
+),
+```
+
+This module provides the service manager config through the module but you may use the `ZF\OAuth2\Client\OAuth2Client``` class directly by injecting your own `Zend\Http\Client` and configuration.
 
 
 Configuration
@@ -21,7 +42,7 @@ You may configure multiple zf-oauth2 authorization code providers.
 ```php
     'zf-oauth2-client' => array(
         'default' => array(
-            'clientId' => 'client15',
+            'client_id' => 'client',
             'secret' => 'password',
             'endpoint' => 'http://localhost:8081/oauth',
             'callback' => 'http://localhost:8082/application/oauth2/callback',
@@ -41,9 +62,11 @@ where 'default' is the configuration block for the authorization code provider:
 public function loginAction()
 {
     $state = md5(rand());
+    $scope = 'read';
     $oauth2Client = $this->getServiceLocator()->get('zf_oauth2_client');
 
-    return $this->plugin('redirect')->toUrl($oauth2Client->getAuthorizationCodeUri('default', $state));
+    return $this->plugin('redirect')
+        ->toUrl($oauth2Client->getAuthorizationCodeUri('default', $state, $scope));
 }
 ```
 
@@ -59,7 +82,7 @@ public function callbackAction()
 }
 ```
 
-The response from validate is a stcClass object and a direct respose from the zf-oauth2 server:
+The response from validate is a stdClass object and a direct respose from the zf-oauth2 server:
 ```php
 stdClass Object
 (
