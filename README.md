@@ -45,9 +45,11 @@ where 'default' is the configuration block for the authorization code provider:
 public function loginAction()
 {
     $state = md5(rand());
+    $scope = 'read';
     $oauth2Client = $this->getServiceLocator()->get('zf_oauth2_client');
 
-    return $this->plugin('redirect')->toUrl($oauth2Client->getAuthorizationCodeUri('default', $state));
+    return $this->plugin('redirect')
+        ->toUrl($oauth2Client->getAuthorizationCodeUri('default', $state, $scope));
 }
 ```
 
