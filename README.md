@@ -1,6 +1,10 @@
 ZF OAuth2 Client
 ================
 
+[![Build Status](https://travis-ci.org/TomHAnderson/zf-oauth2-client.svg?branch=0.1.0)](https://travis-ci.org/TomHAnderson/zf-oauth2-client)
+[![Coverage Status](https://coveralls.io/repos/TomHAnderson/zf-oauth2-client/badge.svg)](https://coveralls.io/r/TomHAnderson/zf-oauth2-client)
+[![Total Downloads](https://poser.pugx.org/zfcampus/zf-oauth2-client/downloads)](https://packagist.org/packages/zfcampus/zf-oauth2-client) 
+
 This client is written to connect to zf-oauth2 specifically.
 
 When you write an application which includes
