@@ -15,6 +15,23 @@ this module is written to connect easily and cleanly with your application.
 Install
 -------
 
+Installation of this module uses composer. For composer documentation, please refer to [getcomposer.org](http://getcomposer.org/).
+
+```sh
+$ php composer.phar require zfcampus/zf-oauth2-client "~0.1"
+```
+
+Add this module to your application's configuration:
+
+```php
+'modules' => array(
+   ...
+   'ZF\OAuth2\Client',
+),
+```
+
+This module provides the service manager config through the module but you may use the `ZF\OAuth2\Client\OAuth2Client``` class directly by injecting your own `Zend\Http\Client` and configuration.
+
 
 Configuration
 -------------
