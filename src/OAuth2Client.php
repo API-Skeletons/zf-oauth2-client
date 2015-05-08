@@ -96,4 +96,3 @@ class OAuth2Client
         return $uri;
     }
 }
-
