@@ -63,7 +63,7 @@ public function callbackAction()
 }
 ```
 
-The response from validate is a stcClass object and a direct respose from the zf-oauth2 server:
+The response from validate is a stdClass object and a direct respose from the zf-oauth2 server:
 ```php
 stdClass Object
 (
