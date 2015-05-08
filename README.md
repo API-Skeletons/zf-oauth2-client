@@ -25,7 +25,7 @@ You may configure multiple zf-oauth2 authorization code providers.
 ```php
     'zf-oauth2-client' => array(
         'default' => array(
-            'clientId' => 'client15',
+            'client_id' => 'client',
             'secret' => 'password',
             'endpoint' => 'http://localhost:8081/oauth',
             'callback' => 'http://localhost:8082/application/oauth2/callback',

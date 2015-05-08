@@ -51,7 +51,7 @@ class OAuth2Client
         ));
         $client->setRawBody(Json::encode(array(
             'grant_type' => 'authorization_code',
-            'client_id' => $config[$profile]['clientId'],
+            'client_id' => $config[$profile]['client_id'],
             'client_secret' => $config[$profile]['secret'],
             'redirect_uri' => $config[$profile]['callback'],
             'code' => $query['code'],
@@ -85,7 +85,7 @@ class OAuth2Client
         );
 
         $uri->setQuery(array(
-            'client_id' => $config[$profile]['clientId'],
+            'client_id' => $config[$profile]['client_id'],
             'redirect_uri' => $config[$profile]['callback'],
             'scope' => $scope,
             'response_type' => 'code',
