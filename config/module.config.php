@@ -12,7 +12,7 @@ return array(
             'zf-oauth2-client' => array(
                 'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/oauth2/client/:profile[/:scope]',
+                    'route'    => '/oauth2/client/:profile',
                     'defaults' => array(
                         'controller' => 'ZF\OAuth2\Client\Controller\OAuth2',
                         'action'     => 'login',

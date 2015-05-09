@@ -19,19 +19,17 @@ class OAuth2Controller extends AbstractActionController
     {
         $oAuth2Service = $this->getServiceLocator()->get('ZF\OAuth2\Client\Service\OAuth2Service');
         $oAuth2Config = $oAuth2Service->getConfig();
+        $profile = $this->params()->fromRoute('profile');
 
         if (!empty($this->getRequest()->getQuery('code'))) {
             // This is a callback request with a code
-            $oAuth2Service->validate($this->params()->fromRoute('profile'), $this->getRequest()->getQuery());
-            $this->plugin('redirect')->toRoute($oAuth2Config['login_redirect_route']);
+            $oAuth2Service->validate($profile, $this->getRequest()->getQuery());
+            $this->plugin('redirect')
+                ->toRoute($oAuth2Config['profiles'][$profile]['login_redirect_route']);
         } else {
             // Send user to authorization code
             return $this->plugin('redirect')
-                ->toUrl($oAuth2Service->getAuthorizationCodeUri(
-                    'default',
-                    $this->params()->fromRoute('scope')
-                )
-            );
+                ->toUrl($oAuth2Service->getAuthorizationCodeUri('default');
         }
     }
 }

@@ -42,13 +42,13 @@ authentication route.
 
 ```php
     'zf-oauth2-client' => array(
-        'login_redirect_route' => 'zfcuser',
         'profiles' => array(
             'default' => array(
+                'login_redirect_route' => 'zfcuser',
                 'client_id' => 'client',
                 'secret' => 'password',
                 'endpoint' => 'http://localhost:8081/oauth',
-                'callback' => 'http://localhost:8082/application/oauth2/callback',
+                'scope' = 'list,of,scopes',
             ),
             /* 'other provider' => array( ... */
         ),
@@ -83,7 +83,7 @@ To send a user into the authorization code process redirect them (from a control
 
 ```php
 $this->plugin('redirect')
-    ->toRoute('zf-oauth2-client', array('profile' => 'default', 'scope' => 'requested_scopes'));
+    ->toRoute('zf-oauth2-client', array('profile' => 'default'));
 ```
 
 When the user returns from the process they will be redirected to the login_redirect_route.  This route

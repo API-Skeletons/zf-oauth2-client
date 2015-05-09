@@ -179,11 +179,9 @@ class OAuth2Service
      * Return an URI object to request an OAuth2 authorization_code
      *
      * @param $profile string
-     * @param $state string
-     * @param $scope string
      * @return Zend\Uri\Uri $uri;
      */
-    public function getAuthorizationCodeUri($profile, $scope = '')
+    public function getAuthorizationCodeUri($profile)
     {
         $config = $this->getConfig();
 
@@ -205,7 +203,7 @@ class OAuth2Service
         $uri->setQuery(array(
             'client_id' => $config['profiles'][$profile]['client_id'],
             'redirect_uri' => $redirectUri,
-            'scope' => $scope,
+            'scope' => $config['profiles'][$profile]['scope'],
             'response_type' => 'code',
             'approval_prompt' => 'auto',
             'state' => $container->state,
