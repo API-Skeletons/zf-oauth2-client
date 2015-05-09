@@ -79,11 +79,15 @@ Use
 A controller is provided to send the user into the authorization code process and validate the code
 when the user returns.  Upon validation the session will have a valid access_token.
 
-To send a user into the authorization code process redirect them (from a controller):
+To send a user into the authorization code process direct them to the zf-oauth2-client route.
 
 ```php
+// Controller
 $this->plugin('redirect')
     ->toRoute('zf-oauth2-client', array('profile' => 'default'));
+
+// View
+$this->url('zf-oauth2-client', array('profile' => 'default'));
 ```
 
 When the user returns from the process they will be redirected to the login_redirect_route.  This route
