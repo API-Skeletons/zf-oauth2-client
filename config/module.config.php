@@ -28,7 +28,7 @@ return array(
             'routes' => array(
                 'generate-jwt' => array(
                     'options' => array(
-                        'route'    => 'jwt:generate',
+                        'route'    => 'oauth2:jwt:generate',
                         'defaults' => array(
                             'controller' => 'ZF\OAuth2\Client\Controller\Jwt',
                             'action'     => 'generate'
