@@ -10,6 +10,8 @@ use ZF\OAuth2\Client\Service\OAuth2Service;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Zend\Console\Adapter\AdapterInterface as Console;
 
 /**
  * ZF2 module
@@ -17,8 +19,16 @@ use Zend\ModuleManager\Feature\ServiceProviderInterface;
 class Module implements
     AutoloaderProviderInterface,
     ConfigProviderInterface,
-    ServiceProviderInterface
+    ServiceProviderInterface,
+    ConsoleUsageProviderInterface
 {
+    public function getConsoleUsage(Console $console)
+    {
+        return array(
+            'oauth2:jwt:generate' => 'Generate a JWT assertion',
+        );
+    }
+
     public function getServiceConfig()
     {
         return array(

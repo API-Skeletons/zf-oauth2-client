@@ -93,3 +93,12 @@ $this->url('zf-oauth2-client', array('profile' => 'default'));
 When the user returns from the process they will be redirected to the login_redirect_route.  This route
 should fetch an authorized http client and, using it, authenticate the user based on their profile
 returned from an API call back to the OAuth2 server.
+ 
+
+Command Line Tools
+------------------
+
+To make JWT easier to test command line tools are included.
+
+ * `oauth2:jwt:generate` Generate a JWT to send to an OAuth2 `grant_type` of `urn:ietf:params:oauth:grant-type:jwt-bearer`
+
