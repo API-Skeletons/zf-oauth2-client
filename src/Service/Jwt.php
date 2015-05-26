@@ -6,7 +6,8 @@ use OAuth2\Encryption\Jwt as ServerJwt;
 use Datetime;
 use Exception;
 
-class Jwt {
+class Jwt
+{
     /**
      * Generate a JWT
      * http://bshaffer.github.io/oauth2-server-php-docs/grant-types/jwt-bearer/
@@ -21,7 +22,7 @@ class Jwt {
      *
      * @return string
      */
-    function generate($privateKey, $iss, $sub, $aud, $exp = null, $nbf = null, $jti = null)
+    public function generate($privateKey, $iss, $sub, $aud, $exp = null, $nbf = null, $jti = null)
     {
         if (!class_exists('OAuth2\Encryption\Jwt')) {
             throw new Exception('bshaffer/oauth2-server-php is required to generate a JWT');

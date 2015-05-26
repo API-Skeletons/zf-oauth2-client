@@ -33,4 +33,3 @@ class OAuth2Controller extends AbstractActionController
         }
     }
 }
-
