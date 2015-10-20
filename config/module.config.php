@@ -38,11 +38,4 @@ return array(
             ),
         ),
     ),
-
-    'service_manager' => array(
-        'invokables' => array(
-            'ZF\OAuth2\Client\Http' => 'Zend\Http\Client',
-            'ZF\OAuth2\Client\HttpBearer' => 'Zend\Http\Client',
-        ),
-    ),
 );

@@ -10,6 +10,7 @@ use Zend\Mvc\Controller\PluginManager;
 use ZF\OAuth2\Client\Exception\ValidateException;
 use Datetime;
 use DateInterval;
+use Zend\Http\Request;
 
 class OAuth2Service
 {
@@ -58,9 +59,8 @@ class OAuth2Service
             $this->refresh($profile);
         }
 
-        $this->httpBearerClient->setHeaders(array(
-            'Authorization' => 'Bearer ' . $container->access_token,
-        ));
+        $headers = $this->httpBearerClient->getRequest()->getHeaders();
+        $headers->addHeaderLine('Authorization: Bearer ' . $container->access_token);
 
         return $this->httpBearerClient;
     }
@@ -138,21 +138,22 @@ class OAuth2Service
         );
 
         // Exchange the authorization code for an access token
-        $client = $this->getHttpClient();
-        $client->setUri($config['profiles'][$profile]['endpoint']);
-        $client->setMethod('POST');
-        $client->setHeaders(array(
+        $request = new Request();
+        $request->setUri($config['profiles'][$profile]['endpoint']);
+        $request->setMethod(Request::METHOD_POST);
+        $request->getHeaders()->addHeaders(array(
             'Accept' => 'application/json',
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ));
-        $client->setRawBody(Json::encode(array(
+        $request->setContent(Json::encode(array(
             'grant_type' => 'authorization_code',
             'client_id' => $config['profiles'][$profile]['client_id'],
             'client_secret' => $config['profiles'][$profile]['secret'],
             'redirect_uri' => $redirectUri,
             'code' => $query['code'],
         )));
-        $response = $client->send();
+
+        $response = $this->getHttpClient()->send($request);
 
         $body = Json::decode($response->getBody(), true);
         if ($response->getStatusCode() !== 200) {

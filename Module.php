@@ -12,6 +12,7 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 use Zend\Console\Adapter\AdapterInterface as Console;
+use Zend\Http\Client;
 
 /**
  * ZF2 module
@@ -44,7 +45,18 @@ class Module implements
                     $client->setPluginManager($services->get('ControllerPluginManager'));
 
                     return $client;
-                }
+                },
+                'ZF\OAuth2\Client\Http' => function ($sm) {
+                    $client = new Client();
+
+                    return $client;
+                },
+
+                'ZF\OAuth2\Client\HttpBearer' => function ($sm) {
+                    $client = new Client();
+
+                    return $client;
+                },
             ),
         );
     }
