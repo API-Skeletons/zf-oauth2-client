@@ -34,5 +34,10 @@
         "classmap": [
             "Module.php"
         ]
+    },
+    "extra": {
+        "zf": {
+            "module": "ZF\\OAuth2\\Client"
+        }
     }
 }

@@ -29,7 +29,7 @@ class OAuth2Controller extends AbstractActionController
         } else {
             // Send user to authorization code
             return $this->plugin('redirect')
-                ->toUrl($oAuth2Service->getAuthorizationCodeUri('default'));
+                ->toUrl($oAuth2Service->getAuthorizationCodeUri($profile));
         }
     }
 }

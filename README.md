@@ -1,15 +1,14 @@
 ZF OAuth2 Client
 ================
 
-[![Build Status](https://travis-ci.org/TomHAnderson/zf-oauth2-client.svg?branch=0.1.0)](https://travis-ci.org/TomHAnderson/zf-oauth2-client)
-[![Coverage Status](https://coveralls.io/repos/TomHAnderson/zf-oauth2-client/badge.svg)](https://coveralls.io/r/TomHAnderson/zf-oauth2-client)
+[![Build Status](https://travis-ci.org/API-Skeletons/zf-oauth2-client.svg?branch=0.1.0)](https://travis-ci.org/API-Skeletons/zf-oauth2-client)
+[![Coverage Status](https://coveralls.io/repos/API-Skeletons/zf-oauth2-client/badge.svg)](https://coveralls.io/r/API-Skeletons/zf-oauth2-client)
 [![Total Downloads](https://poser.pugx.org/zfcampus/zf-oauth2-client/downloads)](https://packagist.org/packages/zfcampus/zf-oauth2-client)
 
-This client is written to connect to zf-oauth2 specifically.
 
 When you write an application which includes
 [zfcampus/zf-oauth2](https://github.com/zfcampus/zf-oauth2)
-this module is written to connect easily and cleanly with your application.
+this module is written to connect easily and cleanly connect to that zf-oauth2 implementation.
 
 
 Install
@@ -18,7 +17,7 @@ Install
 Installation of this module uses composer. For composer documentation, please refer to [getcomposer.org](http://getcomposer.org/).
 
 ```sh
-$ php composer.phar require zfcampus/zf-oauth2-client "~0.1"
+composer require api-skeletons/zf-oauth2-client ^1.0
 ```
 
 Add this module to your application's configuration:
@@ -48,6 +47,7 @@ authentication route.
                 'client_id' => 'client',
                 'secret' => 'password',
                 'endpoint' => 'http://localhost:8081/oauth',
+                'refresh_endpoint' => 'http://localhost:8081/oauth',
                 'scope' = 'list,of,scopes',
             ),
             /* 'other provider' => array( ... */

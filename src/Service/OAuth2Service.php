@@ -86,7 +86,7 @@ class OAuth2Service
         $config = $this->getConfig();
 
         $client = $this->getHttpClient();
-        $client->setUri($config['profiles'][$profile]['endpoint']);
+        $client->setUri($config['profiles'][$profile]['refresh_endpoint']);
         $client->setMethod('POST');
         $client->setHeaders(array(
             'Accept' => 'application/json',
@@ -106,7 +106,7 @@ class OAuth2Service
         $container->access_token = $body['access_token'];
         $container->expires_in = $body['expires_in'];
         $container->token_type = $body['token_type'];
-        $container->scope = $body['scope'];
+        $container->scope = (isset($body['scope'])) ? $body['scope']: null;
         $container->refresh_token = $body['refresh_token'];
 
         return;
@@ -139,7 +139,7 @@ class OAuth2Service
 
         // Exchange the authorization code for an access token
         $request = new Request();
-        $request->setUri($config['profiles'][$profile]['endpoint']);
+        $request->setUri($config['profiles'][$profile]['endpoint'] . '/token');
         $request->setMethod(Request::METHOD_POST);
         $request->getHeaders()->addHeaders(array(
             'Accept' => 'application/json',
@@ -158,6 +158,7 @@ class OAuth2Service
         $body = Json::decode($response->getBody(), true);
         if ($response->getStatusCode() !== 200) {
             // @codeCoverageIgnoreStart
+            print_r($body);die();
             throw new ValidateException($body['detail'], $body['status']);
         }
             // @codeCoverageIgnoreEnd
@@ -166,7 +167,7 @@ class OAuth2Service
         $container->access_token = $body['access_token'];
         $container->expires_in = $body['expires_in'];
         $container->token_type = $body['token_type'];
-        $container->scope = $body['scope'];
+        $container->scope = (isset($body['scope'])) ? $body['scope']: '';
         $container->refresh_token = $body['refresh_token'];
 
         $expires = new Datetime();
